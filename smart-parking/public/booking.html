@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Slot — ParkSmart Pune</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🅿</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="page-loader"><div class="loader-logo">P</div><div class="loader-text">LOADING</div></div>
+<div id="toast-container"></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">⬡ ParkSmart Pune</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="parking-map.html">Live Map</a></li>
+    <li><a href="booking.html" class="active">Book Slot</a></li>
+    <li><a href="find-my-car.html">Find My Car</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="booking.html" class="nav-cta">Book Now →</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<main>
+  <div class="page-hero">
+    <div class="section-label">Reserve Your Space</div>
+    <h1 class="section-title">Book a <span class="gradient-text">Parking Slot</span></h1>
+    <p style="color:var(--text-muted);font-size:14px">Fill in your details and reserve your preferred slot instantly.</p>
+  </div>
+
+  <!-- Booking Form Section -->
+  <div id="booking-form-section" class="booking-layout">
+    <!-- Form -->
+    <div class="glass-card" style="padding:28px">
+      <form id="booking-form" novalidate>
+
+        <!-- Personal Info -->
+        <div class="form-section">
+          <div class="form-section-title">Personal Information</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">Full Name *</label>
+              <input class="form-input" id="name" type="text" placeholder="Rahul Sharma" required autocomplete="name">
+              <span class="form-error" id="name-error">Name must be at least 2 characters</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="mobile">Mobile Number *</label>
+              <input class="form-input" id="mobile" type="tel" placeholder="9876543210" required maxlength="10">
+              <span class="form-error" id="mobile-error">Enter valid 10-digit number</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle Info -->
+        <div class="form-section">
+          <div class="form-section-title">Vehicle Details</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="vehicle-number">Vehicle Number *</label>
+              <input class="form-input" id="vehicle-number" type="text" placeholder="MH12AB1234" required maxlength="10" style="text-transform:uppercase">
+              <span class="form-error" id="vehicle-number-error">Format: MH12AB1234</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="vehicle-type">Vehicle Type *</label>
+              <select class="form-select" id="vehicle-type">
+                <option value="Car">🚗 Car</option>
+                <option value="SUV">🚙 SUV</option>
+                <option value="Bike">🛵 Bike</option>
+                <option value="EV">⚡ EV</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parking Selection -->
+        <div class="form-section">
+          <div class="form-section-title">Parking Preferences</div>
+          <div class="form-group">
+            <label class="form-label">Select Floor</label>
+            <div class="floor-radios">
+              <div class="floor-radio">
+                <input type="radio" name="floor" id="floor-b1" value="B1" checked>
+                <label for="floor-b1"><span>🏚</span>Basement 1</label>
+              </div>
+              <div class="floor-radio">
+                <input type="radio" name="floor" id="floor-b2" value="B2">
+                <label for="floor-b2"><span>🏗</span>Basement 2</label>
+              </div>
+              <div class="floor-radio">
+                <input type="radio" name="floor" id="floor-l1" value="L1">
+                <label for="floor-l1"><span>🌤</span>Level 1</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="slot-preference">Slot Preference</label>
+              <select class="form-select" id="slot-preference">
+                <option value="">Auto-select best slot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="parking-type">Parking Type</label>
+              <select class="form-select" id="parking-type">
+                <option value="Regular">Regular</option>
+                <option value="EV Charging">EV Charging</option>
+                <option value="Handicapped">Handicapped</option>
+                <option value="Compact">Compact</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="entry-time">Entry Date & Time</label>
+            <input class="form-input" id="entry-time" type="datetime-local">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Expected Duration</label>
+            <div class="duration-toggles">
+              <button type="button" class="duration-btn" data-duration="1hr">1 hr<br><small style="font-weight:400;opacity:0.7">Quick</small></button>
+              <button type="button" class="duration-btn selected" data-duration="2hr">2 hrs<br><small style="font-weight:400;opacity:0.7">Standard</small></button>
+              <button type="button" class="duration-btn" data-duration="4hr">4 hrs<br><small style="font-weight:400;opacity:0.7">Extended</small></button>
+              <button type="button" class="duration-btn" data-duration="Full Day">Full Day<br><small style="font-weight:400;opacity:0.7">8 hrs</small></button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%;padding:16px">
+          ⚡ Confirm Booking
+        </button>
+      </form>
+    </div>
+
+    <!-- Fare Calculator -->
+    <div class="fare-calc glass-card">
+      <h3>💰 FARE CALCULATOR</h3>
+      <div class="fare-row"><span>Rate</span><span id="fare-rate">₹30/hr</span></div>
+      <div class="fare-row"><span>Duration</span><span id="fare-hours">2 hrs</span></div>
+      <div class="fare-row"><span>Subtotal</span><span id="fare-subtotal">₹60</span></div>
+      <div class="fare-row"><span>GST (5%)</span><span id="fare-tax">₹3</span></div>
+      <div class="fare-total">
+        <span style="font-family:Orbitron;font-size:13px;font-weight:700;color:var(--text-muted)">TOTAL</span>
+        <span class="fare-amount" id="fare-total">₹63</span>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:rgba(0,212,255,0.05);border:1px solid var(--border);border-radius:10px;font-size:12px;color:var(--text-muted)">
+        <strong style="color:var(--cyan)">Rates:</strong><br>
+        Regular/SUV: ₹30/hr · EV: ₹50/hr<br>
+        Compact/Bike: ₹20/hr · Handicapped: ₹25/hr
+      </div>
+      <div style="margin-top:12px;text-align:center">
+        <a href="parking-map.html" class="btn btn-outline" style="width:100%;font-size:12px">
+          🗺 View Available Slots
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Confirmation -->
+  <div id="booking-confirmation" class="booking-confirmation">
+    <div class="glass-card" style="max-width:520px;margin:0 auto;padding:40px">
+      <div style="font-size:48px;margin-bottom:8px">🎉</div>
+      <h2 style="font-family:Orbitron;font-size:20px;font-weight:700;color:var(--green);margin-bottom:4px">Booking Confirmed!</h2>
+      <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Your parking slot has been reserved</p>
+
+      <div class="booking-id-display" id="conf-booking-id">PSP-2024-XXXX</div>
+
+      <div class="qr-placeholder">
+        <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#00D4FF" stroke-width="2"/>
+          <rect x="12" y="12" width="21" height="21" rx="1" fill="rgba(0,212,255,0.3)"/>
+          <rect x="16" y="16" width="13" height="13" fill="#00D4FF" rx="1"/>
+          <rect x="50" y="5" width="35" height="35" rx="3" fill="none" stroke="#00D4FF" stroke-width="2"/>
+          <rect x="57" y="12" width="21" height="21" rx="1" fill="rgba(0,212,255,0.3)"/>
+          <rect x="61" y="16" width="13" height="13" fill="#00D4FF" rx="1"/>
+          <rect x="5" y="50" width="35" height="35" rx="3" fill="none" stroke="#00D4FF" stroke-width="2"/>
+          <rect x="12" y="57" width="21" height="21" rx="1" fill="rgba(0,212,255,0.3)"/>
+          <rect x="16" y="61" width="13" height="13" fill="#00D4FF" rx="1"/>
+          <rect x="50" y="50" width="8" height="8" fill="#00D4FF" rx="1"/>
+          <rect x="62" y="50" width="8" height="8" fill="#00D4FF" rx="1"/>
+          <rect x="74" y="50" width="11" height="8" fill="#00D4FF" rx="1"/>
+          <rect x="50" y="62" width="11" height="8" fill="#00D4FF" rx="1"/>
+          <rect x="65" y="62" width="8" height="8" fill="#00D4FF" rx="1"/>
+          <rect x="77" y="62" width="8" height="8" fill="#00D4FF" rx="1"/>
+          <rect x="50" y="74" width="8" height="11" fill="#00D4FF" rx="1"/>
+          <rect x="62" y="74" width="23" height="11" fill="#00D4FF" rx="1"/>
+        </svg>
+      </div>
+
+      <div class="confirm-details">
+        <div class="confirm-row"><span>👤 Name</span><span id="conf-name">—</span></div>
+        <div class="confirm-row"><span>🚗 Vehicle</span><span id="conf-vehicle">—</span></div>
+        <div class="confirm-row"><span>🅿 Slot</span><span id="conf-slot" style="color:var(--cyan);font-family:Orbitron">—</span></div>
+        <div class="confirm-row"><span>🏢 Floor</span><span id="conf-floor">—</span></div>
+        <div class="confirm-row"><span>⏱ Duration</span><span id="conf-duration">—</span></div>
+        <div class="confirm-row"><span>🏷 Type</span><span id="conf-type">—</span></div>
+        <div class="confirm-row"><span>💳 Total Amount</span><span id="conf-amount" style="color:var(--green);font-weight:700">—</span></div>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap">
+        <button class="btn btn-outline" id="print-pass" style="flex:1">🖨 Download Pass</button>
+        <a class="btn btn-primary" id="conf-find-link" href="find-my-car.html" style="flex:1">🔍 Find My Car</a>
+      </div>
+      <div style="margin-top:12px">
+        <a href="index.html" class="btn" style="width:100%;background:rgba(255,255,255,0.05);color:var(--text-muted);font-size:13px">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-items">
+    <a href="index.html" class="mobile-nav-item"><span>🏠</span><span>Home</span></a>
+    <a href="parking-map.html" class="mobile-nav-item"><span>🗺</span><span>Map</span></a>
+    <a href="booking.html" class="mobile-nav-item active"><span>⚡</span><span>Book</span></a>
+    <a href="find-my-car.html" class="mobile-nav-item"><span>🔍</span><span>Find</span></a>
+    <a href="dashboard.html" class="mobile-nav-item"><span>📊</span><span>Admin</span></a>
+  </div>
+</nav>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="js/main.js"></script>
+<script src="js/booking.js"></script>
+</body>
+</html>

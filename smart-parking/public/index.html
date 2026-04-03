@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParkSmart Pune — Amanora Mall Parking</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🅿</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Page Loader -->
+<div id="page-loader">
+  <div class="loader-logo">P</div>
+  <div class="loader-text">LOADING PARKSMART</div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">⬡ ParkSmart Pune</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="parking-map.html">Live Map</a></li>
+    <li><a href="booking.html">Book Slot</a></li>
+    <li><a href="find-my-car.html">Find My Car</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="booking.html" class="nav-cta">Book Now →</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="section-label">Amanora Mall, Pune</div>
+    <h1 class="hero-headline">
+      <span class="gradient-text">Find.</span> Park. <span class="gradient-text">Go.</span>
+    </h1>
+    <p class="hero-sub">Smart parking for Pune's most premium shopping destination. Real-time slots, instant booking, zero hassle.</p>
+    <div class="hero-buttons">
+      <a href="parking-map.html" class="btn btn-primary btn-lg">🗺 View Live Map</a>
+      <a href="booking.html" class="btn btn-outline btn-lg">⚡ Book a Slot</a>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item stat-total">
+      <div class="stat-value" data-stat="total">—</div>
+      <div class="stat-label">Total Slots</div>
+    </div>
+    <div class="stat-item stat-available">
+      <div class="stat-value" data-stat="available">—</div>
+      <div class="stat-label">Available</div>
+    </div>
+    <div class="stat-item stat-occupied">
+      <div class="stat-value" data-stat="occupied">—</div>
+      <div class="stat-label">Occupied</div>
+    </div>
+    <div class="stat-item stat-reserved">
+      <div class="stat-value" data-stat="reserved">—</div>
+      <div class="stat-label">Reserved</div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section style="padding:60px 0 20px">
+    <div style="text-align:center;padding:0 40px">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">Everything You Need to <span class="gradient-text">Park Smart</span></h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card glass-card" onclick="location.href='parking-map.html'">
+        <div class="feature-icon">🗺</div>
+        <h3>Live Parking Map</h3>
+        <p>See real-time slot availability across all 3 floors — updated every 15 seconds.</p>
+      </div>
+      <div class="feature-card glass-card" onclick="location.href='booking.html'">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Booking</h3>
+        <p>Reserve your preferred slot in under 60 seconds with our smart booking form.</p>
+      </div>
+      <div class="feature-card glass-card" onclick="location.href='find-my-car.html'">
+        <div class="feature-icon">🔍</div>
+        <h3>Find My Car</h3>
+        <p>Forgot where you parked? Search by vehicle number and get exact slot details.</p>
+      </div>
+      <div class="feature-card glass-card" onclick="location.href='dashboard.html'">
+        <div class="feature-icon">📊</div>
+        <h3>Admin Dashboard</h3>
+        <p>Complete overview of occupancy, revenue, and all active bookings in one view.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="section-label">Simple Process</div>
+    <h2 class="section-title">Park in <span class="gradient-text">3 Easy Steps</span></h2>
+    <div class="steps-container">
+      <div class="step glass-card" style="position:relative">
+        <div class="step-number">1</div>
+        <div class="step-connector"></div>
+        <h4>Check Availability</h4>
+        <p>View the live parking map to see available slots across Basement 1, Basement 2, and Level 1.</p>
+      </div>
+      <div class="step glass-card" style="position:relative">
+        <div class="step-number">2</div>
+        <div class="step-connector"></div>
+        <h4>Book Your Slot</h4>
+        <p>Enter your vehicle details, choose duration, and confirm. Get an instant digital parking pass.</p>
+      </div>
+      <div class="step glass-card">
+        <div class="step-number">3</div>
+        <h4>Park & Go</h4>
+        <p>Head to your reserved slot, scan your QR pass, and enjoy Amanora Mall without parking stress.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mall Info -->
+  <section class="mall-section">
+    <div class="section-label">Amanora Mall</div>
+    <h2 class="section-title">Pune's Largest <span class="gradient-text">Premium Mall</span></h2>
+    <div class="mall-grid">
+      <div>
+        <p style="color:var(--text-muted);margin-bottom:24px;line-height:1.8">
+          Located in Hadapsar, Amanora Mall is Pune's largest retail destination with over 200 stores, 
+          a multiplex, food court, and entertainment zones. Our smart parking system covers all 3 levels 
+          with 60 premium parking slots.
+        </p>
+        <div class="floor-levels">
+          <div class="floor-level-card glass-card">
+            <div class="floor-level-icon">🏚</div>
+            <div>
+              <div style="font-family:Orbitron;font-size:13px;font-weight:700;margin-bottom:4px">Basement 1</div>
+              <div style="font-size:12px;color:var(--text-muted)">20 slots — Regular, EV Charging, Handicapped, Compact</div>
+            </div>
+          </div>
+          <div class="floor-level-card glass-card">
+            <div class="floor-level-icon">🏗</div>
+            <div>
+              <div style="font-family:Orbitron;font-size:13px;font-weight:700;margin-bottom:4px">Basement 2</div>
+              <div style="font-size:12px;color:var(--text-muted)">20 slots — Regular, EV Charging, Handicapped</div>
+            </div>
+          </div>
+          <div class="floor-level-card glass-card">
+            <div class="floor-level-icon">🌤</div>
+            <div>
+              <div style="font-family:Orbitron;font-size:13px;font-weight:700;margin-bottom:4px">Level 1</div>
+              <div style="font-size:12px;color:var(--text-muted)">20 slots — Regular, EV Charging, Handicapped, Compact</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:28px">
+        <h3 style="font-family:Orbitron;font-size:14px;color:var(--cyan);margin-bottom:20px;letter-spacing:1px">PARKING RATES</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;padding:12px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15);border-radius:10px">
+            <span>🚗 Regular / SUV</span><span style="color:var(--green);font-weight:700">₹30/hr</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px">
+            <span>⚡ EV Charging</span><span style="color:var(--cyan);font-weight:700">₹50/hr</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px;background:rgba(123,47,255,0.05);border:1px solid rgba(123,47,255,0.2);border-radius:10px">
+            <span>🛵 Bike / Compact</span><span style="color:var(--violet);font-weight:700">₹20/hr</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.15);border-radius:10px">
+            <span>♿ Handicapped</span><span style="color:var(--amber);font-weight:700">₹25/hr</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <div class="footer-logo">⬡ ParkSmart Pune</div>
+    <p style="font-size:13px;color:var(--text-muted);max-width:220px">Smart parking management for Amanora Mall, Hadapsar, Pune.</p>
+  </div>
+  <div>
+    <div style="font-family:Orbitron;font-size:11px;color:var(--cyan);margin-bottom:12px;letter-spacing:2px">QUICK LINKS</div>
+    <ul class="footer-links">
+      <li><a href="parking-map.html">Live Parking Map</a></li>
+      <li><a href="booking.html">Book a Slot</a></li>
+      <li><a href="find-my-car.html">Find My Car</a></li>
+      <li><a href="dashboard.html">Admin Dashboard</a></li>
+    </ul>
+  </div>
+  <div>
+    <div style="font-family:Orbitron;font-size:11px;color:var(--cyan);margin-bottom:12px;letter-spacing:2px">CONTACT</div>
+    <ul class="footer-links">
+      <li><a href="#">📍 Amanora Mall, Hadapsar, Pune 411028</a></li>
+      <li><a href="#">📞 +91 20 1234 5678</a></li>
+      <li><a href="#">✉ parking@amanora.in</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2024 ParkSmart Pune. All rights reserved.</span>
+  <span style="color:var(--cyan)">Amanora Mall · Hadapsar · Pune</span>
+</div>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-items">
+    <a href="index.html" class="mobile-nav-item active"><span>🏠</span><span>Home</span></a>
+    <a href="parking-map.html" class="mobile-nav-item"><span>🗺</span><span>Map</span></a>
+    <a href="booking.html" class="mobile-nav-item"><span>⚡</span><span>Book</span></a>
+    <a href="find-my-car.html" class="mobile-nav-item"><span>🔍</span><span>Find</span></a>
+    <a href="dashboard.html" class="mobile-nav-item"><span>📊</span><span>Admin</span></a>
+  </div>
+</nav>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

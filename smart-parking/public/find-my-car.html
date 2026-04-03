@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find My Car — ParkSmart Pune</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🅿</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="page-loader"><div class="loader-logo">P</div><div class="loader-text">LOADING</div></div>
+<div id="toast-container"></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">⬡ ParkSmart Pune</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="parking-map.html">Live Map</a></li>
+    <li><a href="booking.html">Book Slot</a></li>
+    <li><a href="find-my-car.html" class="active">Find My Car</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="booking.html" class="nav-cta">Book Now →</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<main>
+  <div class="page-hero">
+    <div class="section-label">Vehicle Locator</div>
+    <h1 class="section-title">Find <span class="gradient-text">My Car</span></h1>
+    <p style="color:var(--text-muted);font-size:14px">Search by vehicle number or booking ID to locate your car instantly.</p>
+  </div>
+
+  <div class="find-layout">
+
+    <!-- Recent Searches -->
+    <div id="recent-searches-section" class="recent-searches" style="display:none">
+      <h4>Recent Searches</h4>
+      <div id="recent-chips"></div>
+    </div>
+
+    <!-- Search Tabs -->
+    <div class="search-tabs">
+      <button class="search-tab active" data-tab="vehicle">🚗 By Vehicle Number</button>
+      <button class="search-tab" data-tab="booking">📋 By Booking ID</button>
+    </div>
+
+    <!-- Vehicle Number Search -->
+    <div id="vehicle-section">
+      <div class="search-input-wrap">
+        <input class="form-input" id="vehicle-input" type="text" placeholder="Enter vehicle number (e.g. MH12AB1234)"
+               style="text-transform:uppercase;font-size:15px" maxlength="10">
+        <button class="btn btn-primary" id="search-vehicle-btn">Search</button>
+      </div>
+    </div>
+
+    <!-- Booking ID Search -->
+    <div id="booking-section" style="display:none">
+      <div class="search-input-wrap">
+        <input class="form-input" id="booking-input" type="text" placeholder="Enter booking ID (e.g. PSP-2024-0001)"
+               style="font-size:15px">
+        <button class="btn btn-primary" id="search-booking-btn">Search</button>
+      </div>
+    </div>
+
+    <!-- Result Card -->
+    <div class="result-card glass-card" id="result-card"></div>
+
+    <!-- Not Found -->
+    <div class="not-found glass-card" id="not-found">
+      <div class="not-found-icon">🔍</div>
+      <h3 style="font-family:Orbitron;font-size:16px;margin-bottom:8px">No Vehicle Found</h3>
+      <p style="color:var(--text-muted);margin-bottom:20px">We couldn't find a vehicle matching your search. Please check the number and try again.</p>
+      <button class="btn btn-outline" onclick="document.getElementById('vehicle-input').value='';document.getElementById('booking-input').value='';document.getElementById('not-found').classList.remove('visible')">
+        Try Again
+      </button>
+    </div>
+
+    <!-- Help -->
+    <div class="glass-card" style="padding:20px;margin-top:24px">
+      <div style="font-family:Orbitron;font-size:11px;color:var(--cyan);letter-spacing:2px;margin-bottom:12px">DEMO VEHICLES</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span class="chip" onclick="tryDemo('MH12AB1234')">MH12AB1234</span>
+        <span class="chip" onclick="tryDemo('MH12CD3456')">MH12CD3456</span>
+        <span class="chip" onclick="tryDemo('MH14EV5678')">MH14EV5678</span>
+        <span class="chip" onclick="tryDemo('PSP-2024-0001')">PSP-2024-0001</span>
+        <span class="chip" onclick="tryDemo('PSP-2024-0010')">PSP-2024-0010</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-items">
+    <a href="index.html" class="mobile-nav-item"><span>🏠</span><span>Home</span></a>
+    <a href="parking-map.html" class="mobile-nav-item"><span>🗺</span><span>Map</span></a>
+    <a href="booking.html" class="mobile-nav-item"><span>⚡</span><span>Book</span></a>
+    <a href="find-my-car.html" class="mobile-nav-item active"><span>🔍</span><span>Find</span></a>
+    <a href="dashboard.html" class="mobile-nav-item"><span>📊</span><span>Admin</span></a>
+  </div>
+</nav>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="js/main.js"></script>
+<script src="js/find-my-car.js"></script>
+<script>
+function tryDemo(val) {
+  if (val.startsWith('PSP-')) {
+    switchTab('booking');
+    document.getElementById('booking-input').value = val;
+  } else {
+    switchTab('vehicle');
+    document.getElementById('vehicle-input').value = val;
+  }
+  doSearch();
+}
+</script>
+</body>
+</html>

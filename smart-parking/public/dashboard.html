@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — ParkSmart Pune</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🅿</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.table-container { padding: 0 40px 40px; }
+@media(max-width:768px){ .table-container { padding: 0 16px 40px; } }
+.action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<div id="page-loader"><div class="loader-logo">P</div><div class="loader-text">LOADING</div></div>
+<div id="toast-container"></div>
+
+<!-- PIN Modal -->
+<div class="pin-modal-overlay" id="pin-overlay">
+  <div class="pin-modal glass-card">
+    <div style="font-size:40px;margin-bottom:12px">🔐</div>
+    <h2 style="font-family:Orbitron;font-size:18px;margin-bottom:8px">Admin Access</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:20px">Enter 4-digit PIN to continue</p>
+    <input class="form-input pin-input" id="pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric">
+    <div id="pin-error" style="color:var(--red);font-size:12px;margin-top:8px;display:none">Incorrect PIN. Try again.</div>
+    <button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="checkPin()">Unlock Dashboard</button>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:12px">Default PIN: 1234</p>
+  </div>
+</div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">⬡ ParkSmart Pune</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="parking-map.html">Live Map</a></li>
+    <li><a href="booking.html">Book Slot</a></li>
+    <li><a href="find-my-car.html">Find My Car</a></li>
+    <li><a href="dashboard.html" class="active">Dashboard</a></li>
+    <li><a href="booking.html" class="nav-cta">Book Now →</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<main>
+  <div class="page-hero" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+    <div>
+      <div class="section-label">Admin Panel</div>
+      <h1 class="section-title">Operations <span class="gradient-text">Dashboard</span></h1>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="font-size:12px;color:var(--text-muted)" id="refresh-indicator">Auto-refreshing...</span>
+      <button class="btn btn-outline btn-sm" onclick="loadDashboard()">↻ Refresh</button>
+      <button class="btn btn-sm" style="background:rgba(255,60,95,0.1);color:var(--red);border:1px solid rgba(255,60,95,0.2)" onclick="lockDashboard()">🔒 Lock</button>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="dashboard-grid" id="stats-grid">
+    <div class="dash-stat glass-card">
+      <div class="dash-stat-value" style="color:var(--cyan)" id="d-total">—</div>
+      <div class="dash-stat-label">Total Slots</div>
+    </div>
+    <div class="dash-stat glass-card">
+      <div class="dash-stat-value" style="color:var(--green)" id="d-available">—</div>
+      <div class="dash-stat-label">Available</div>
+    </div>
+    <div class="dash-stat glass-card">
+      <div class="dash-stat-value" style="color:var(--red)" id="d-occupied">—</div>
+      <div class="dash-stat-label">Occupied</div>
+    </div>
+    <div class="dash-stat glass-card">
+      <div class="dash-stat-value" style="color:var(--amber)" id="d-reserved">—</div>
+      <div class="dash-stat-label">Reserved</div>
+    </div>
+    <div class="dash-stat glass-card">
+      <div class="dash-stat-value" style="color:var(--violet)" id="d-revenue">—</div>
+      <div class="dash-stat-label">Revenue Today</div>
+    </div>
+  </div>
+
+  <!-- Charts + Floor stats -->
+  <div class="dashboard-content">
+    <!-- Donut Chart -->
+    <div class="donut-wrap glass-card">
+      <h3 style="font-family:Orbitron;font-size:12px;color:var(--cyan);letter-spacing:2px;margin-bottom:20px">OCCUPANCY</h3>
+      <canvas id="donut-canvas" width="160" height="160" style="display:block;margin:0 auto 20px"></canvas>
+      <div class="donut-legend" id="donut-legend">
+        <div class="donut-legend-item"><span><span class="donut-legend-dot" style="background:var(--green)"></span>Available</span><span id="leg-available">—</span></div>
+        <div class="donut-legend-item"><span><span class="donut-legend-dot" style="background:var(--red)"></span>Occupied</span><span id="leg-occupied">—</span></div>
+        <div class="donut-legend-item"><span><span class="donut-legend-dot" style="background:var(--amber)"></span>Reserved</span><span id="leg-reserved">—</span></div>
+      </div>
+
+      <h3 style="font-family:Orbitron;font-size:12px;color:var(--cyan);letter-spacing:2px;margin:24px 0 16px">BY FLOOR</h3>
+      <div class="floor-bars" id="floor-bars"></div>
+    </div>
+
+    <!-- Bookings Table -->
+    <div>
+      <div style="font-family:Orbitron;font-size:12px;color:var(--cyan);letter-spacing:2px;margin-bottom:16px">ALL BOOKINGS</div>
+      <div class="table-wrap glass-card" style="padding:0;overflow:hidden">
+        <table class="data-table" id="bookings-table">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Name</th>
+              <th>Vehicle No</th>
+              <th>Slot</th>
+              <th>Floor</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody">
+            <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted)">Loading bookings...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-items">
+    <a href="index.html" class="mobile-nav-item"><span>🏠</span><span>Home</span></a>
+    <a href="parking-map.html" class="mobile-nav-item"><span>🗺</span><span>Map</span></a>
+    <a href="booking.html" class="mobile-nav-item"><span>⚡</span><span>Book</span></a>
+    <a href="find-my-car.html" class="mobile-nav-item"><span>🔍</span><span>Find</span></a>
+    <a href="dashboard.html" class="mobile-nav-item active"><span>📊</span><span>Admin</span></a>
+  </div>
+</nav>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="js/main.js"></script>
+<script>
+// PIN check
+function checkPin() {
+  const pin = document.getElementById('pin-input').value;
+  if (pin === '1234') {
+    sessionStorage.setItem('adminAuth', '1');
+    document.getElementById('pin-overlay').style.display = 'none';
+    loadDashboard();
+    startAutoRefresh();
+  } else {
+    document.getElementById('pin-error').style.display = 'block';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').classList.add('error');
+    setTimeout(() => document.getElementById('pin-input').classList.remove('error'), 500);
+  }
+}
+
+function lockDashboard() {
+  sessionStorage.removeItem('adminAuth');
+  document.getElementById('pin-overlay').style.display = 'flex';
+  document.getElementById('pin-input').value = '';
+}
+
+document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
+
+if (sessionStorage.getItem('adminAuth') === '1') {
+  document.getElementById('pin-overlay').style.display = 'none';
+  loadDashboard();
+  startAutoRefresh();
+}
+
+// Draw donut chart on canvas
+function drawDonut(available, occupied, reserved) {
+  const canvas = document.getElementById('donut-canvas');
+  const ctx = canvas.getContext('2d');
+  const cx = 80, cy = 80, r = 65, inner = 44;
+  const total = available + occupied + reserved;
+  if (total === 0) return;
+
+  const segments = [
+    { val: available, color: '#00FF88' },
+    { val: occupied, color: '#FF3C5F' },
+    { val: reserved, color: '#FFB800' }
+  ];
+
+  ctx.clearRect(0, 0, 160, 160);
+  let start = -Math.PI / 2;
+
+  segments.forEach(seg => {
+    const angle = (seg.val / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, start + angle);
+    ctx.closePath();
+    ctx.fillStyle = seg.color + '33';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, start, start + angle);
+    ctx.arc(cx, cy, inner, start + angle, start, true);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    start += angle;
+  });
+
+  // Center
+  ctx.beginPath();
+  ctx.arc(cx, cy, inner - 2, 0, Math.PI * 2);
+  ctx.fillStyle = '#0A0E1A';
+  ctx.fill();
+
+  // Center text
+  const pct = Math.round((occupied / total) * 100);
+  ctx.fillStyle = '#00D4FF';
+  ctx.font = 'bold 20px Orbitron, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(pct + '%', cx, cy + 4);
+  ctx.fillStyle = '#6B7A9E';
+  ctx.font = '9px Exo 2, sans-serif';
+  ctx.fillText('OCCUPIED', cx, cy + 18);
+}
+
+function renderFloorBars(floorStats) {
+  const container = document.getElementById('floor-bars');
+  container.innerHTML = floorStats.map(f => {
+    const pct = Math.round((f.occupied / f.total) * 100);
+    return `
+      <div class="floor-bar-row">
+        <div class="floor-bar-header">
+          <span style="font-family:Orbitron;font-size:11px">${f.floor === 'B1' ? 'Basement 1' : f.floor === 'B2' ? 'Basement 2' : 'Level 1'}</span>
+          <span style="font-size:11px;color:var(--text-muted)">${f.occupied}/${f.total} (${pct}%)</span>
+        </div>
+        <div class="floor-bar-track">
+          <div class="floor-bar-fill" style="width:${pct}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderBookingsTable(bookings) {
+  const tbody = document.getElementById('bookings-tbody');
+  if (!bookings.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted)">No bookings found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = bookings.map(b => `
+    <tr>
+      <td style="font-family:Orbitron;font-size:11px;color:var(--cyan)">${b.id}</td>
+      <td>${b.name}</td>
+      <td style="font-weight:600">${b.vehicleNumber || '—'}</td>
+      <td style="font-family:Orbitron;font-size:12px">${b.slotId}</td>
+      <td>${b.floor}</td>
+      <td>${b.duration}</td>
+      <td><span class="status-badge ${b.status.toLowerCase()}">${b.status}</span></td>
+      <td style="color:var(--green);font-weight:600">₹${b.amount}</td>
+      <td>
+        <div class="action-btns">
+          ${b.status !== 'Completed' ? `<button class="btn btn-danger btn-sm" onclick="releaseSlot('${b.id}')">Release</button>` : ''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function releaseSlot(id) {
+  if (!confirm(`Release slot for booking ${id}?`)) return;
+  try {
+    const res = await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Slot released successfully', 'success');
+      loadDashboard();
+    }
+  } catch (e) {
+    showToast('Failed to release slot', 'error');
+  }
+}
+
+async function loadDashboard() {
+  try {
+    const [statsRes, bookingsRes] = await Promise.all([
+      fetch('/api/stats'),
+      fetch('/api/bookings')
+    ]);
+    const statsData = await statsRes.json();
+    const bookingsData = await bookingsRes.json();
+
+    const s = statsData.stats;
+    document.getElementById('d-total').textContent = s.total;
+    document.getElementById('d-available').textContent = s.available;
+    document.getElementById('d-occupied').textContent = s.occupied;
+    document.getElementById('d-reserved').textContent = s.reserved;
+    document.getElementById('d-revenue').textContent = `₹${s.revenueToday.toLocaleString('en-IN')}`;
+
+    document.getElementById('leg-available').textContent = s.available;
+    document.getElementById('leg-occupied').textContent = s.occupied;
+    document.getElementById('leg-reserved').textContent = s.reserved;
+
+    drawDonut(s.available, s.occupied, s.reserved);
+    renderFloorBars(s.floorStats);
+    renderBookingsTable(bookingsData.bookings);
+
+    document.getElementById('refresh-indicator').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+  } catch (e) {
+    showToast('Failed to load dashboard data', 'error');
+  }
+}
+
+let autoRefreshTimer;
+function startAutoRefresh() {
+  autoRefreshTimer = setInterval(() => {
+    if (sessionStorage.getItem('adminAuth') === '1') loadDashboard();
+  }, 20000);
+}
+</script>
+</body>
+</html>
