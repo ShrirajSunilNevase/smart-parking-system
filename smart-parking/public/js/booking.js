@@ -107,9 +107,40 @@ document.getElementById('booking-form').addEventListener('submit', async e => {
   const floor = document.querySelector('input[name="floor"]:checked')?.value || 'B1';
   let slotId = document.getElementById('slot-preference').value;
 
-  // Auto-select
-  if (!slotId && availableSlots.length > 0) slotId = availableSlots[0].id;
-  if (!slotId) { showToast('No available slots on this floor', 'error'); return; }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Booking...';
+
+  // Always fetch fresh slots from API at submit time to avoid stale/empty state
+  try {
+    const slotRes = await fetch(`/api/parking/${floor}`);
+    const slotData = await slotRes.json();
+    const freshSlots = (slotData.slots || []).filter(s => s.status === 'Available');
+
+    // If user picked a specific slot, verify it's still available
+    if (slotId) {
+      const stillAvailable = freshSlots.find(s => s.id === slotId);
+      if (!stillAvailable) {
+        slotId = freshSlots.length > 0 ? freshSlots[0].id : null;
+        if (slotId) showToast(`Original slot taken. Auto-selected ${slotId}`, 'warning');
+      }
+    } else {
+      // Auto-select best available slot
+      slotId = freshSlots.length > 0 ? freshSlots[0].id : null;
+    }
+
+    if (!slotId) {
+      showToast('No available slots on this floor. Try another floor.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Confirm Booking';
+      return;
+    }
+  } catch (err) {
+    showToast('Could not load slots. Please try again.', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Confirm Booking';
+    return;
+  }
 
   const parkingType = document.getElementById('parking-type').value;
   const vType = document.getElementById('vehicle-type').value;
@@ -129,10 +160,6 @@ document.getElementById('booking-form').addEventListener('submit', async e => {
     parkingType,
     amount
   };
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Booking...';
 
   try {
     const res = await fetch('/api/bookings', {
